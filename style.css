@@ -2442,6 +2442,54 @@
             transition: all 0.3s ease;
         }
 
+       /* Styles pour les liens des cartes */
+.card-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+    z-index: 3;
+    display: block;
+}
+
+/* S'assurer que le contenu reste en bas de la carte */
+.artist-card {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+}
+
+.artist-card .meta {
+    position: relative;
+    z-index: 4;
+    width: 100%;
+}
+
+/* Conserver l'effet de dégradé sur le contenu */
+.artist-card .meta {
+    padding: 18px 20px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.25) 40%, rgba(0, 0, 0, 0.6) 100%);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* État hover pour toute la carte */
+.artist-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 18px 40px rgba(16, 24, 40, 0.18);
+}
+
+/* Animation au survol du lien */
+.card-link:hover ~ .media,
+.artist-card:hover .media {
+    transform: scale(1.03);
+}
+
+        
         .exhibitor-card-square:hover .card-icon {
             transform: scale(1.1);
         }
@@ -3552,12 +3600,48 @@
         }
 
         /* ===== STYLES SPÉCIFIQUES À LA PAGE PROGRAMME ===== */
-
-        /* Fond de la page programme */
         body.programme-page {
             background: #f5eddc;
             padding-top: 80px;
             /* Pour compenser la navbar fixe */
+        }
+
+        .programme-page nav {
+            background-color: #000;
+            /* Fond noir opaque */
+            backdrop-filter: none;
+            /* Supprime l'effet glass */
+            -webkit-backdrop-filter: none;
+            padding: 15px 40px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .programme-page nav.scrolled {
+            background: #000;
+            /* Reste noir au défilement */
+            padding: 12px 40px;
+        }
+
+        .programme-page .nav-links a {
+            color: #fff;
+            /* Texte blanc pour contraster avec le fond noir */
+        }
+
+        .programme-page .nav-links a.active {
+            color: #FF7B00;
+            font-weight: 600;
+        }
+
+        .programme-page .nav-links a.active:after {
+            width: 70%;
+        }
+
+        .programme-page .nav-links a:hover {
+            color: #FF7B00;
+        }
+
+        .programme-page .hamburger {
+            color: white;
         }
 
         /* Section Programme */
@@ -3711,3 +3795,346 @@
                 font-size: 2rem;
             }
         }
+
+
+        
+
+        /* ===== STYLES SPÉCIFIQUES À LA PAGE DÉTAIL ARTISTE ===== */
+body.artiste-detail-page {
+    background: #f5eddc;
+    padding-top: 80px;
+}
+
+.artiste-detail-page nav {
+    background-color: #000;
+    padding: 15px 40px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.artiste-detail-page nav.scrolled {
+    background: #000;
+    padding: 12px 40px;
+}
+
+.artiste-detail-page .nav-links a {
+    color: #fff;
+}
+
+.artiste-detail-page .nav-links a:hover {
+    color: #FF7B00;
+}
+
+.artiste-detail-page .hamburger {
+    color: white;
+}
+
+/* Section détail artiste */
+.artiste-detail-section {
+    padding: 40px 0 80px;
+}
+
+.artiste-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 50px;
+}
+
+.artiste-image {
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.artiste-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.artiste-info {
+    text-align: center;
+}
+
+.artiste-name {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #222;
+    margin-bottom: 10px;
+}
+
+.artiste-genre {
+    font-size: 1.2rem;
+    color: #FF7B00;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.artiste-meta {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #555;
+    font-weight: 500;
+}
+
+.meta-item i {
+    color: #FF7B00;
+}
+
+.artiste-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.btn-primary {
+    background-color: #FF7B00;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #e06e00;
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    border: 2px solid #FF7B00;
+    color: #FF7B00;
+    background: transparent;
+    padding: 10px 25px;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+    background-color: #FF7B00;
+    color: white;
+}
+
+/* Contenu artiste */
+.artiste-content {
+    margin-top: 40px;
+}
+
+.artiste-bio {
+    margin-bottom: 40px;
+}
+
+.artiste-bio h2 {
+    font-size: 1.8rem;
+    color: #222;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.artiste-bio p {
+    color: #444;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+
+.artiste-media h2 {
+    font-size: 1.8rem;
+    color: #222;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.media-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.media-item {
+    height: 200px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.media-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.media-item:hover img {
+    transform: scale(1.05);
+}
+
+/* Sidebar */
+.artiste-sidebar {
+    position: sticky;
+    top: 100px;
+}
+
+.sidebar-card {
+    background: white;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-card h3 {
+    font-size: 1.4rem;
+    color: #222;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.performance-list {
+    list-style: none;
+    padding: 0;
+}
+
+.performance-list li {
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.performance-list li:last-child {
+    border-bottom: none;
+}
+
+.performance-date {
+    font-weight: 600;
+    color: #222;
+}
+
+.performance-location {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background: #f0f0f0;
+    border-radius: 50%;
+    color: #555;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.social-link:hover {
+    background: #FF7B00;
+    color: white;
+    transform: translateY(-3px);
+}
+
+.music-player {
+    margin-top: 15px;
+}
+
+.track {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.track:last-child {
+    border-bottom: none;
+}
+
+.track-info {
+    flex: 1;
+}
+
+.track-title {
+    font-weight: 600;
+    color: #222;
+}
+
+.track-album {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.play-btn {
+    background: #FF7B00;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.play-btn:hover {
+    background: #e06e00;
+    transform: scale(1.1);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .artiste-header {
+        flex-direction: column;
+    }
+    
+    .artiste-name {
+        font-size: 2.5rem;
+    }
+    
+    .artiste-meta {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .media-gallery {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .artiste-name {
+        font-size: 2rem;
+    }
+    
+    .artiste-image {
+        height: 300px;
+    }
+    
+    .artiste-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn-primary, .btn-outline {
+        width: 100%;
+        max-width: 300px;
+    }
+}

@@ -962,3 +962,205 @@ function animateProgrammePage() {
         });
     }
 }
+
+// Initialiser les fonctionnalités de la page programme
+document.addEventListener('DOMContentLoaded', function() {
+    // Vérifier si on est sur la page programme
+    if (document.body.classList.contains('programme-page')) {
+        initProgrammeFilters();
+        animateProgrammePage();
+    }
+});
+
+
+// ===== FONCTIONNALITÉS SPÉCIFIQUES À LA PAGE DÉTAIL ARTISTE =====
+
+// Initialisation de la page détail artiste
+function initArtisteDetail() {
+    // Gestion des boutons favoris
+    const favoriteBtn = document.querySelector('.btn-primary');
+    if (favoriteBtn) {
+        favoriteBtn.addEventListener('click', function() {
+            this.classList.toggle('active');
+            if (this.classList.contains('active')) {
+                this.innerHTML = '<i class="fas fa-heart"></i> Retirer des favoris';
+                showNotification('Artiste ajouté à vos favoris');
+            } else {
+                this.innerHTML = '<i class="fas fa-heart"></i> Ajouter à mes favoris';
+            }
+        });
+    }
+
+    // Gestion du bouton partager
+    const shareBtn = document.querySelector('.btn-outline');
+    if (shareBtn) {
+        shareBtn.addEventListener('click', function() {
+            if (navigator.share) {
+                navigator.share({
+                    title: document.title,
+                    url: window.location.href
+                }).catch(console.error);
+            } else {
+                // Fallback pour les navigateurs qui ne supportent pas l'API Web Share
+                copyToClipboard(window.location.href);
+                showNotification('Lien copié dans le presse-papiers');
+            }
+        });
+    }
+
+    // Gestion des boutons de lecture
+    const playButtons = document.querySelectorAll('.play-btn');
+    playButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const isPlaying = this.classList.contains('playing');
+            
+            // Réinitialiser tous les autres boutons
+            playButtons.forEach(b => {
+                b.classList.remove('playing');
+                b.innerHTML = '<i class="fas fa-play"></i>';
+            });
+            
+            if (!isPlaying) {
+                this.classList.add('playing');
+                this.innerHTML = '<i class="fas fa-pause"></i>';
+                // Ici, vous intégreriez votre lecteur audio réel
+                simulateAudioPlayback();
+            }
+        });
+    });
+
+    // Animation d'entrée des éléments
+    animateArtistePage();
+}
+
+// Simulation de lecture audio (à remplacer par un vrai lecteur)
+function simulateAudioPlayback() {
+    console.log("Lecture audio simulée - Intégrez un vrai lecteur audio ici");
+}
+
+// Copier du texte dans le presse-papiers
+function copyToClipboard(text) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+}
+
+// Afficher une notification
+function showNotification(message) {
+    // Créer l'élément de notification
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.innerHTML = message;
+    notification.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #FF7B00;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 5px;
+        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        animation: fadeIn 0.3s ease;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Supprimer la notification après 3 secondes
+    setTimeout(() => {
+        notification.style.animation = 'fadeOut 0.3s ease';
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 3000);
+}
+
+// Animation de la page artiste
+function animateArtistePage() {
+    const artisteSection = document.querySelector('.artiste-detail-section');
+    
+    if (artisteSection) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Animation de l'image
+                    const artisteImage = document.querySelector('.artiste-image');
+                    if (artisteImage) {
+                        artisteImage.style.opacity = '1';
+                        artisteImage.style.transform = 'translateY(0)';
+                    }
+                    
+                    // Animation des informations
+                    const artisteInfo = document.querySelector('.artiste-info');
+                    if (artisteInfo) {
+                        setTimeout(() => {
+                            artisteInfo.style.opacity = '1';
+                            artisteInfo.style.transform = 'translateY(0)';
+                        }, 300);
+                    }
+                    
+                    // Animation du contenu
+                    const contentElements = document.querySelectorAll('.artiste-bio, .artiste-media, .sidebar-card');
+                    contentElements.forEach((el, index) => {
+                        setTimeout(() => {
+                            el.style.opacity = '1';
+                            el.style.transform = 'translateY(0)';
+                        }, 500 + (index * 100));
+                    });
+                    
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        observer.observe(artisteSection);
+        
+        // Préparer les animations
+        const artisteImage = document.querySelector('.artiste-image');
+        const artisteInfo = document.querySelector('.artiste-info');
+        const contentElements = document.querySelectorAll('.artiste-bio, .artiste-media, .sidebar-card');
+        
+        if (artisteImage) {
+            artisteImage.style.opacity = '0';
+            artisteImage.style.transform = 'translateY(30px)';
+            artisteImage.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        }
+        
+        if (artisteInfo) {
+            artisteInfo.style.opacity = '0';
+            artisteInfo.style.transform = 'translateY(30px)';
+            artisteInfo.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        }
+        
+        contentElements.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        });
+    }
+}
+
+// Ajouter les animations CSS pour les notifications
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes fadeOut {
+        from { opacity: 1; transform: translateY(0); }
+        to { opacity: 0; transform: translateY(20px); }
+    }
+`;
+document.head.appendChild(style);
+
+// Initialiser la page lorsque le DOM est chargé
+document.addEventListener('DOMContentLoaded', function() {
+    if (document.body.classList.contains('artiste-detail-page')) {
+        initArtisteDetail();
+    }
+});
